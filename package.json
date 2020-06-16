@@ -1,0 +1,22 @@
+{
+  "name": "ganister-installer",
+  "version": "1.0.0",
+  "description": "Ganister Installer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "ganister": "./cli.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "adm-zip": "^0.4.14",
+    "fs-extra": "^9.0.1",
+    "inquirer": "^7.2.0",
+    "lodash": "^4.17.15",
+    "ora": "^4.0.4",
+    "superagent": "^5.2.2"
+  }
+}
