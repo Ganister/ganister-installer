@@ -20,7 +20,7 @@ const start = async () => {
       name: 'username',
     },
     {
-      type: 'input',
+      type: 'password',
       message: 'Enter password',
       name: 'password',
     },
