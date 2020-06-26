@@ -21,7 +21,6 @@ const start = async () => {
       choices: ['Register', 'Download'],
     },
   ]);
-  console.log(action);
   if (action === 'Register') {
     const { customerName, companyName, customerEmail, city } = await inquirer.prompt([
       {
@@ -57,30 +56,24 @@ const start = async () => {
       });
     // If versions failed, show error message and exit
     if (registration instanceof Error) return spinner.fail(`Cannot Register: ${registration.message}`);
-    console.log(registration);
     spinner.succeed(`Registration complete. Please confirm your email before downloading Ganister`);
   }
   if (action === 'Download') {
-    const { username, password } = await inquirer.prompt([
+    const { email } = await inquirer.prompt([
       {
         type: 'input',
-        message: 'Enter username',
-        name: 'username',
-      },
-      {
-        type: 'password',
-        message: 'Enter password',
-        name: 'password',
-      },
+        message: 'Enter email',
+        name: 'email',
+      }
     ]);
     //  Get versions from ganister.eu
     const versions = await agent
-      .post('https://ganister.eu/securePortal/ganisterReleases')
+      .post('https://ganister.eu/ganisterinstallReleases')
       .set('Content-Type', 'application/json')
-      .send({ username, password })
+      .send({ email })
       .then((res) => res.body)
       .catch((err) => {
-        console.error(`Cannot Login to Ganister: ${err.message}`);
+        console.error(`Not verified: ${err.message}`);
         return err;
       });
     // If versions failed, show error message and exit
