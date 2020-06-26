@@ -107,7 +107,7 @@ const start = async () => {
   
     //  Download Zip File
     agent
-      .get(`https://ganister.eu${targetVersion.url}`)
+      .get(`https://ganister.eu/ganisterinstallDownload${targetVersion.url}`)
       .set('Accept-Encoding', 'gzip, deflate, br')
       .on('error', (err) => {
         spinner.fail(`Ganister Download Failed! Read error below: ${err.message}`);
