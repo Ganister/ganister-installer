@@ -59,18 +59,18 @@ const start = async () => {
     spinner.succeed(`Registration complete. Please confirm your email before downloading Ganister`);
   }
   if (action === 'Download') {
-    const { email } = await inquirer.prompt([
+    const { customerEmail } = await inquirer.prompt([
       {
         type: 'input',
         message: 'Enter email',
-        name: 'email',
+        name: 'customerEmail',
       }
     ]);
     //  Get versions from ganister.eu
     const versions = await agent
       .post('https://ganister.eu/ganisterinstallReleases')
       .set('Content-Type', 'application/json')
-      .send({ email })
+      .send({ customerEmail })
       .then((res) => res.body)
       .catch((err) => {
         console.error(`Not verified: ${err.message}`);
@@ -107,8 +107,9 @@ const start = async () => {
   
     //  Download Zip File
     agent
-      .get(`https://ganister.eu/ganisterinstallDownload${targetVersion.url}`)
+      .post(`https://ganister.eu/ganisterinstallDownload${targetVersion.url}`)
       .set('Accept-Encoding', 'gzip, deflate, br')
+      .send({ customerEmail })
       .on('error', (err) => {
         spinner.fail(`Ganister Download Failed! Read error below: ${err.message}`);
         return err;
