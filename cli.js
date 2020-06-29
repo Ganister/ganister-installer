@@ -64,6 +64,11 @@ const start = async () => {
         type: 'input',
         message: 'Enter email',
         name: 'customerEmail',
+      },
+      {
+        type: 'input',
+        message: 'Enter Verification Code',
+        name: 'verificationCode',
       }
     ]);
     //  Get versions from ganister.eu
