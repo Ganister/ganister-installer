@@ -51,7 +51,7 @@ const start = async () => {
       .send({ customerName, companyName, customerEmail, city })
       .then((res) => res.body)
       .catch((err) => {
-        console.log(err);
+        console.error(`Registration Failed: ${err.message}`);
         return err;
       });
     // If versions failed, show error message and exit
@@ -59,7 +59,7 @@ const start = async () => {
     spinner.succeed(`Registration complete. Please confirm your email before downloading Ganister`);
   }
   if (action === 'Download') {
-    const { customerEmail } = await inquirer.prompt([
+    const { customerEmail, verificationCode } = await inquirer.prompt([
       {
         type: 'input',
         message: 'Enter email',
@@ -70,10 +70,10 @@ const start = async () => {
     const versions = await agent
       .post('https://ganister.eu/ganisterinstallReleases')
       .set('Content-Type', 'application/json')
-      .send({ customerEmail })
+      .send({ customerEmail, verificationCode })
       .then((res) => res.body)
       .catch((err) => {
-        console.error(`Not verified: ${err.message}`);
+        console.error(`Looks like the provided email and verification code are not yet verified in our system: ${err.message}`);
         return err;
       });
     // If versions failed, show error message and exit
@@ -109,7 +109,7 @@ const start = async () => {
     agent
       .post(`https://ganister.eu/ganisterinstallDownload${targetVersion.url}`)
       .set('Accept-Encoding', 'gzip, deflate, br')
-      .send({ customerEmail })
+      .send({ customerEmail, verificationCode })
       .on('error', (err) => {
         spinner.fail(`Ganister Download Failed! Read error below: ${err.message}`);
         return err;
@@ -124,7 +124,7 @@ const start = async () => {
           spinner.succeed('File Unzipped!');
           await fs.removeSync(zipFile);
         } catch (err) {
-          spinner.fail(`Zip extract failed: ${err}`);
+          spinner.fail(`Zip extract failed: ${err.message}`);
           return 0;
         }
         console.log(`
