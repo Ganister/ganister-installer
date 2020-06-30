@@ -13,16 +13,33 @@ const agent = superagent.agent();
 const zipFile = 'ganister.zip';
 
 const start = async () => {
+  const { customerEmail } = await inquirer.prompt([
+    {
+      type: 'input',
+      message: 'Enter email',
+      name: 'customerEmail',
+    },
+  ]);
+  if (!customerEmail) return console.error('An email is required');
+  const sendVerificationCode = await agent
+    .post('https://ganister.eu/ganisterInstallVerificationCode')
+    .set('Content-Type', 'application/json')
+    .send({ customerEmail })
+    .then((res) => res.body)
+    .catch((err) => {
+      return err;
+    });
+
   const { action } = await inquirer.prompt([
     {
       type: 'list',
       name: 'action',
-      message: 'A user account is required to download Ganister. Please select:',
-      choices: ['Register', 'Download'],
+      message: `We sent you a verification code. If you didn't receive an email, please register`,
+      choices: ['Enter Verification Code', 'Register'],
     },
   ]);
   if (action === 'Register') {
-    const { customerName, companyName, customerEmail, city } = await inquirer.prompt([
+    const { customerName, companyName, city } = await inquirer.prompt([
       {
         type: 'input',
         message: 'Enter name',
@@ -32,11 +49,6 @@ const start = async () => {
         type: 'input',
         message: 'Enter company name',
         name: 'companyName',
-      },
-      {
-        type: 'input',
-        message: 'Enter email',
-        name: 'customerEmail',
       },
       {
         type: 'input',
@@ -56,37 +68,43 @@ const start = async () => {
       });
     // If versions failed, show error message and exit
     if (registration instanceof Error) return spinner.fail(`Cannot Register: ${registration.message}`);
-    spinner.succeed(`Registration complete. Please confirm your email before downloading Ganister`);
-  }
-  if (action === 'Download') {
-    const { customerEmail, verificationCode } = await inquirer.prompt([
-      {
-        type: 'input',
-        message: 'Enter email',
-        name: 'customerEmail',
-      },
-      {
-        type: 'input',
-        message: 'Enter Verification Code',
-        name: 'verificationCode',
-      }
-    ]);
-    //  Get versions from ganister.eu
-    const versions = await agent
-      .post('https://ganister.eu/ganisterinstallReleases')
+    spinner.succeed(`Registration complete`);
+    const sendVerificationCode = await agent
+      .post('https://ganister.eu/ganisterInstallVerificationCode')
       .set('Content-Type', 'application/json')
-      .send({ customerEmail, verificationCode })
+      .send({ customerEmail })
       .then((res) => res.body)
       .catch((err) => {
-        console.error(`Looks like the provided email and verification code are not yet verified in our system: ${err.message}`);
+        console.error(`Verification code cannot be sent at the moment: ${err.message}`);
         return err;
       });
+    if (sendVerificationCode === true) {
+      console.log('Check your email for the verification code')
+    }
+  }
+  const { verificationCode } = await inquirer.prompt([
+    {
+      type: 'input',
+      message: 'Enter Verification Code',
+      name: 'verificationCode',
+    }
+  ]);
+  //  Get versions from ganister.eu
+  const versions = await agent
+    .post('https://ganister.eu/ganisterinstallReleases')
+    .set('Content-Type', 'application/json')
+    .send({ customerEmail, verificationCode })
+    .then((res) => res.body)
+    .catch((err) => {
+      console.error(`Looks like the provided email and verification code are not yet verified in our system: ${err.message}`);
+      return err;
+    });
     // If versions failed, show error message and exit
     if (versions instanceof Error) return (`Cannot get versions list: ${versions.message}`);
     //  Filter versions
     const validVersions = versions.filter((v) => v.published && v.url).map((v) => v.version);
     if (!validVersions) return console.error('No versions found!');
-  
+
     const { version } = await inquirer.prompt([
       {
         type: 'list',
@@ -103,13 +121,13 @@ const start = async () => {
         choices: ['Yes', 'No, Exit'],
       },
     ]);
-  
+
     if (confirm !== 'Yes') return 0;
-  
+
     const targetVersion = versions.find((v) => v.version === version);
     //  Start Spinner
     let spinner = ora('Start installing Ganister...').start();
-  
+
     //  Download Zip File
     agent
       .post(`https://ganister.eu/ganisterinstallDownload${targetVersion.url}`)
@@ -146,7 +164,6 @@ const start = async () => {
           \x1b[32m                Version ${targetVersion.version} has been installed!\x1b[0m \n
           ----------------------------------------------------------------------------\n`);
       });
-  }
 };
 
 start();
