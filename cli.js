@@ -6,6 +6,7 @@ const AdmZip = require('adm-zip');
 const fs = require('fs-extra');
 const ora = require('ora');
 const _ = require('lodash');
+const ganisterUrl = 'https://ganister.eu/';
 
 const agent = superagent.agent();
 
@@ -22,7 +23,7 @@ const start = async () => {
   ]);
   if (!customerEmail) return console.error('An email is required');
   const sendVerificationCode = await agent
-    .post('https://ganister.eu/ganisterInstallVerificationCode')
+    .post(ganisterUrl+'ganisterInstallVerificationCode')
     .set('Content-Type', 'application/json')
     .send({ customerEmail })
     .then((res) => res.body)
@@ -58,7 +59,7 @@ const start = async () => {
     ]);
     let spinner = ora('Start Registeration process...').start();
     const registration = await agent
-      .post('https://ganister.eu/ganisterinstallRegistration')
+      .post(ganisterUrl+'ganisterinstallRegistration')
       .set('Content-Type', 'application/json')
       .send({ customerName, companyName, customerEmail, city })
       .then((res) => res.body)
@@ -70,7 +71,7 @@ const start = async () => {
     if (registration instanceof Error) return spinner.fail(`Cannot Register: ${registration.message}`);
     spinner.succeed(`Registration complete`);
     const sendVerificationCode = await agent
-      .post('https://ganister.eu/ganisterInstallVerificationCode')
+      .post(ganisterUrl+'ganisterInstallVerificationCode')
       .set('Content-Type', 'application/json')
       .send({ customerEmail })
       .then((res) => res.body)
@@ -91,7 +92,7 @@ const start = async () => {
   ]);
   //  Get versions from ganister.eu
   const versions = await agent
-    .post('https://ganister.eu/ganisterinstallReleases')
+    .post(ganisterUrl+'ganisterinstallReleases')
     .set('Content-Type', 'application/json')
     .send({ customerEmail, verificationCode })
     .then((res) => res.body)
@@ -130,7 +131,7 @@ const start = async () => {
 
     //  Download Zip File
     agent
-      .post(`https://ganister.eu/ganisterinstallDownload${targetVersion.url}`)
+      .post(ganisterUrl+`ganisterinstallDownload${targetVersion.url}`)
       .set('Accept-Encoding', 'gzip, deflate, br')
       .send({ customerEmail, verificationCode })
       .on('error', (err) => {
