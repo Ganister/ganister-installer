@@ -1,6 +1,6 @@
 {
   "name": "ganister-install",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Ganister Installer",
   "main": "index.js",
   "scripts": {
