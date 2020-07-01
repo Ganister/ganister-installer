@@ -14,8 +14,7 @@ npm install -g ganister-installer
 
 2. Run the installer
 ```
-c:\GanisterFolder\newGanister
-
+c:\<Install-Folder>\newGanister
 ```
 3. enter your email address
 4. If you already registered you will receive an email with a one-time confirmation code. Else you can select Register which will continue the registration process
@@ -30,8 +29,8 @@ c:\GanisterFolder\newGanister
 
 ![Version Selection](./assets/images/selectVersion.png "Version Selection")
 
-
 7. Confirm Download and install
+
 ![Confirm Downloading](./assets/images/validDownload.png "Confirm Downloading")
 
 8. The download is then confirmed
