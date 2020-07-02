@@ -5,7 +5,7 @@ Ganister Installer is the Ganister PLM install package available on NPM.
 ## Install
 
 ```
-npm install -g ganister-installer
+npm install -g ganister-install
 ```
 
 ## Use
