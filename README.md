@@ -27,15 +27,15 @@ c:\<Install-Folder>\newGanister
 
 6. Back to the command line, type the verification code and validate the version you want to install
 
-![Version Selection](https://github.com/YMA-MDL/ganister-installer/blob/master/assets/images/selectVersion.png "Version Selection")
+![Version Selection](https://github.com/YMA-MDL/ganister-installer/blob/master/assets/images/selectVersion.png?raw=true "Version Selection")
 
 7. Confirm Download and install
 
-![Confirm Downloading](https://github.com/YMA-MDL/ganister-installer/blob/master/assets/images/validDownload.png "Confirm Downloading")
+![Confirm Downloading](https://github.com/YMA-MDL/ganister-installer/blob/master/assets/images/validDownload.png?raw=true "Confirm Downloading")
 
 8. The download is then confirmed
 
-![Download Confirmation](https://github.com/YMA-MDL/ganister-installer/blob/master/assets/images/downloadDone.png "Download Confirmation")
+![Download Confirmation](https://github.com/YMA-MDL/ganister-installer/blob/master/assets/images/downloadDone.png?raw=true "Download Confirmation")
 
 9. You can refer to the Ganister install documentation to continue.
 
