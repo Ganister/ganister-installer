@@ -1,6 +1,6 @@
 {
   "name": "ganister-install",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Ganister Installer",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,12 @@
   "bin": {
     "newGanister": "./cli.js"
   },
-  "author": "",
+  "author": "Ganister",
+  "homepage": "https://ganister.eu",
+  "bugs": {
+    "email":"support@ganister.eu"
+  },
+  "keywords": ["PLM","Configuration Management", "PDM", "Graph"],
   "license": "ISC",
   "dependencies": {
     "adm-zip": "^0.4.14",
