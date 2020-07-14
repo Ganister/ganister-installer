@@ -22,6 +22,7 @@ const start = async () => {
     },
   ]);
   if (!customerEmail) return console.error('An email is required');
+  let spinner = ora('Validating Email...').start();
   const sendVerificationCode = await agent
     .post(ganisterUrl+'ganisterInstallVerificationCode')
     .set('Content-Type', 'application/json')
@@ -30,6 +31,7 @@ const start = async () => {
     .catch((err) => {
       return err;
     });
+  spinner.succeed(`Process completed`);
 
   const { action } = await inquirer.prompt([
     {
@@ -127,7 +129,7 @@ const start = async () => {
 
     const targetVersion = versions.find((v) => v.version === version);
     //  Start Spinner
-    let spinner = ora('Start installing Ganister...').start();
+    spinner = ora('Start installing Ganister...').start();
 
     //  Download Zip File
     agent
