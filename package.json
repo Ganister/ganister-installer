@@ -12,16 +12,23 @@
   "author": "Ganister",
   "homepage": "https://ganister.eu",
   "bugs": {
-    "email":"support@ganister.eu"
+    "email": "support@ganister.eu"
   },
-  "keywords": ["PLM","Configuration Management", "PDM", "Graph"],
+  "keywords": [
+    "PLM",
+    "Configuration Management",
+    "PDM",
+    "Graph"
+  ],
   "license": "ISC",
   "dependencies": {
     "adm-zip": "^0.4.14",
+    "dotenv": "^8.2.0",
     "fs-extra": "^9.0.1",
     "inquirer": "^7.2.0",
     "lodash": "^4.17.15",
     "ora": "^4.0.4",
-    "superagent": "^5.2.2"
+    "superagent": "^5.2.2",
+    "update-dotenv": "^1.1.1"
   }
 }
